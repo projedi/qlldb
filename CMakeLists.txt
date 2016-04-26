@@ -4,6 +4,7 @@ project(qlldb)
 
 include(ExternalProject)
 
+set(CMAKE_MACOSX_RPATH 1)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)

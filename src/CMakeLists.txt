@@ -1,6 +1,7 @@
 set (SOURCES
-  main.cc
   application.cc
+  driver/Driver.cpp  # has main()
+  driver/Platform.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32

@@ -27,3 +27,6 @@
 - `git submodule update --init`
 - `make configure`
 - `make build`
+
+## llvm version bump checklist
+[ ] merge changes in `lldb/tools/driver` to `src/driver`.

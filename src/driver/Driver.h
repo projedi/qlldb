@@ -23,6 +23,7 @@
 #include "lldb/API/SBDebugger.h"
 #include "lldb/API/SBError.h"
 
+class Application;
 class IOChannel;
 
 class Driver : public lldb::SBBroadcaster
@@ -41,7 +42,7 @@ public:
     ~Driver ();
 
     void
-    MainLoop ();
+    MainLoop (Application&);
 
     lldb::SBError
     ParseArgs (int argc, const char *argv[], FILE *out_fh, bool &do_exit);

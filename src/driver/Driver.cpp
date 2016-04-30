@@ -46,6 +46,8 @@
 #include "llvm/Support/DataTypes.h"
 #endif
 
+#include "application.h"
+
 using namespace lldb;
 
 static void reset_stdin_termios ();
@@ -991,7 +993,7 @@ EscapeString (std::string arg)
 }
 
 void
-Driver::MainLoop ()
+Driver::MainLoop (Application& app)
 {
     if (::tcgetattr(STDIN_FILENO, &g_old_stdin_termios) == 0)
     {
@@ -1193,7 +1195,11 @@ Driver::MainLoop ()
         if (go_interactive)
         {
             m_debugger.SetInputFileHandle (stdin, true);
+#if 0  // Forking into our Qt code.
             m_debugger.RunCommandInterpreter(handle_events, spawn_thread);
+#else
+            app.RunCommandInterpreter(m_debugger, m_option_data);
+#endif
         }
     }
     
@@ -1261,7 +1267,7 @@ sigcont_handler (int signo)
 }
 
 int
-main (int argc, char const *argv[], const char *envp[])
+main (int argc, char *argv[], const char *envp[])
 {
 #ifdef _MSC_VER
 	// disable buffering on windows
@@ -1285,7 +1291,8 @@ main (int argc, char const *argv[], const char *envp[])
         Driver driver;
 
         bool exiting = false;
-        SBError error (driver.ParseArgs (argc, argv, stdout, exiting));
+        Application app(argc, argv);  // Might modify argc, argv
+        SBError error (driver.ParseArgs (argc, const_cast<const char**>(argv), stdout, exiting));
         if (error.Fail())
         {
             const char *error_cstr = error.GetCString ();
@@ -1294,7 +1301,7 @@ main (int argc, char const *argv[], const char *envp[])
         }
         else if (!exiting)
         {
-            driver.MainLoop ();
+            driver.MainLoop (app);
         }
     }
 

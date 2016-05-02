@@ -2,6 +2,7 @@ set (SOURCES
   application.cc
   driver/Driver.cpp  # has main()
   driver/Platform.cpp
+  qlldb/command_interpreter.cc
 )
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32

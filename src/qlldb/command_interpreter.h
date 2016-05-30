@@ -21,6 +21,7 @@ class CommandInterpreter : public QObject {
 
  public slots:
   void sendCommand(const QString& command);
+  void sendInterrupt();
 
  signals:
   void outputLogChanged();

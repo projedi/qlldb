@@ -34,6 +34,20 @@ ApplicationWindow {
             Layout.fillWidth: true
             placeholderText: qsTr("lldb prompt")
 
+            // TODO: Logic has no place here.
+            Keys.onPressed: {
+              var modifier = Qt.platform.os == "osx"
+                  ? Qt.MetaModifier
+                  : Qt.ControlModifier;
+              if (event.modifiers == modifier &&
+                  event.key == Qt.Key_C &&
+                  selectionStart == selectionEnd) {
+                event.accepted = true;
+                CommandInterpreter.sendInterrupt()
+                text = ""
+              }
+            }
+
             onAccepted: {
               CommandInterpreter.sendCommand(text)
               text = ""

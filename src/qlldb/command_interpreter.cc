@@ -30,4 +30,8 @@ void CommandInterpreter::sendCommand(const QString& command) {
   emit outputLogChanged();
 }
 
+void CommandInterpreter::sendInterrupt() {
+  command_interpreter_.GetDebugger().DispatchInputInterrupt();
+}
+
 }  // namespace qlldb

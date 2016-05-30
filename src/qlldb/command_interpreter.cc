@@ -20,7 +20,9 @@ void CommandInterpreter::sendCommand(const QString& command) {
   // TODO: This should be more systematic.
   if (command == "gui") {
     output_log_ += QString("> gui\n");
-    output_log_ += QString("error: gui command is unsupported in qlldb (since, you know, it's a gui already)\n");
+    output_log_ += QString(
+        "error: gui command is unsupported in qlldb (since, you know, it's a "
+        "gui already)\n");
     emit outputLogChanged();
     return;
   }

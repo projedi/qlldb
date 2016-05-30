@@ -17,6 +17,13 @@ CommandInterpreter::~CommandInterpreter() = default;
 void CommandInterpreter::sendCommand(const QString& command) {
   if (command.isEmpty())
     return;
+  // TODO: This should be more systematic.
+  if (command == "gui") {
+    output_log_ += QString("> gui\n");
+    output_log_ += QString("error: gui command is unsupported in qlldb (since, you know, it's a gui already)\n");
+    emit outputLogChanged();
+    return;
+  }
   lldb::SBCommandReturnObject result;
   command_interpreter_.HandleCommand(command.toStdString().c_str(), result,
                                      true);

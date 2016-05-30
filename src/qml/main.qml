@@ -33,6 +33,7 @@ ApplicationWindow {
             Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
             Layout.fillWidth: true
             placeholderText: qsTr("lldb prompt")
+            focus: true
 
             // TODO: Logic has no place here.
             Keys.onPressed: {
@@ -51,6 +52,11 @@ ApplicationWindow {
             onAccepted: {
               CommandInterpreter.sendCommand(text)
               text = ""
+            }
+
+            onActiveFocusChanged: {
+              if (!activeFocus)
+                forceActiveFocus()
             }
         }
     }

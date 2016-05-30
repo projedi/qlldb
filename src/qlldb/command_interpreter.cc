@@ -4,6 +4,8 @@
 
 #include <QDebug>
 
+#include "application.h"
+
 namespace qlldb {
 
 CommandInterpreter::CommandInterpreter(
@@ -18,6 +20,10 @@ void CommandInterpreter::sendCommand(const QString& command) {
   lldb::SBCommandReturnObject result;
   command_interpreter_.HandleCommand(command.toStdString().c_str(), result,
                                      true);
+  if (result.GetStatus() == lldb::eReturnStatusQuit) {
+    Application::quit();
+    return;
+  }
   output_log_ += QString("> ") + command + "\n";
   output_log_ += result.GetOutput();
   output_log_ += result.GetError();

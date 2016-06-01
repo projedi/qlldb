@@ -18,13 +18,17 @@ ApplicationWindow {
         id: columnLayout1
         anchors.fill: parent
 
-        TextArea {
-            id: outputLog
-            font.family: "Courier"
-            Layout.fillHeight: true
-            Layout.fillWidth: true
-            text: CommandInterpreter.outputLog
-            readOnly: true
+        ScrollView {
+          Layout.fillHeight: true
+          Layout.fillWidth: true
+          ListView {
+              id: outputLog
+              model: CommandInterpreter.outputLog
+              delegate: Text {
+                text: display
+                font.family: "Courier"
+              }
+          }
         }
 
         TextField {

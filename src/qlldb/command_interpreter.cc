@@ -6,6 +6,17 @@
 
 #include "application.h"
 
+namespace {
+
+// TODO: ensure that it's efficient.
+QStringListModel& operator<<(QStringListModel& string_list_model,
+                             const QString& string) {
+  string_list_model.setStringList(string_list_model.stringList() << string);
+  return string_list_model;
+}
+
+}  // namespace
+
 namespace qlldb {
 
 CommandInterpreter::CommandInterpreter(
@@ -19,11 +30,10 @@ void CommandInterpreter::sendCommand(const QString& command) {
     return;
   // TODO: This should be more systematic.
   if (command == "gui") {
-    output_log_ += QString("> gui\n");
-    output_log_ += QString(
-        "error: gui command is unsupported in qlldb (since, you know, it's a "
-        "gui already)\n");
-    emit outputLogChanged();
+    output_log_ << "> gui";
+    output_log_ << "error: gui command is unsupported in qlldb (since, you "
+                   "know, it's a "
+                   "gui already)";
     return;
   }
   lldb::SBCommandReturnObject result;
@@ -33,10 +43,9 @@ void CommandInterpreter::sendCommand(const QString& command) {
     Application::quit();
     return;
   }
-  output_log_ += QString("> ") + command + "\n";
-  output_log_ += result.GetOutput();
-  output_log_ += result.GetError();
-  emit outputLogChanged();
+  output_log_ << (QString("> ") + command);
+  output_log_ << result.GetOutput();
+  output_log_ << result.GetError();
 }
 
 void CommandInterpreter::sendInterrupt() {
